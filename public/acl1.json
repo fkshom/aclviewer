@@ -2,6 +2,10 @@
     {
         "dcname": "dc01",
         "pname": "pg01",
+        "two_tuples": [
+            ["host1", "host2"],
+            ["host1", "host3"]
+        ],
         "rules": [
             {
                 "description": "PERMT_host1_googledns_tcp",
@@ -32,7 +36,7 @@
                 "destination_ip": "1.1.1.1",
                 "destination_port": "80",
                 "comment": "default rule"
-            },
+            }
         ]
     }
 ]
