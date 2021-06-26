@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Tool1 from "../views/Tool1.vue";
-
+import Tool2 from "../views/Tool2.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -15,6 +15,11 @@ const routes = [
     path: "/tool1",
     name: "Tool1",
     component: Tool1,
+  },
+  {
+    path: "/tool2",
+    name: "Tool2",
+    component: Tool2,
   },
   {
     path: "/about",

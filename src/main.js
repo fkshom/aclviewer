@@ -10,6 +10,9 @@ Vue.use(VueAxios, axios);
 import Multiselect from "vue-multiselect";
 Vue.component("multiselect", Multiselect);
 
+import RichText from "@juliushaertl/vue-richtext";
+Vue.component(RichText);
+
 Vue.config.productionTip = false;
 
 new Vue({

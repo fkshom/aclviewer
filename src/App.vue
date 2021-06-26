@@ -67,6 +67,7 @@ export default {
       ["mdi-email", "Home", "/"],
       ["mdi-account-supervisor-circle", "App", "Home"],
       ["mdi-account-supervisor-circle", "Tool1", "Tool1"],
+      ["mdi-account-supervisor-circle", "Tool2", "Tool2"],
       ["mdi-clock-start", "About", "About"],
     ],
   }),
