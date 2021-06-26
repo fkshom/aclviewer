@@ -1,0 +1,48 @@
+[
+    {
+        "dcname": "dc01",
+        "pname": "pg01",
+        "two_tuples": [
+            [
+                "host1",
+                "host2"
+            ],
+            [
+                "host1",
+                "host3"
+            ]
+        ],
+        "rules": [
+            {
+                "description": "PERMT_host1_googledns_tcp",
+                "action": "",
+                "protocol": "tcp",
+                "source_ip": "192.168.0.1",
+                "source_port": "32768-65535",
+                "destination_ip": "8.8.8.8",
+                "destination_port": "80",
+                "comment": "default rule"
+            },
+            {
+                "description": "PERMT_host2_googledns_tcp",
+                "action": "",
+                "protocol": "tcp",
+                "source_ip": "192.168.0.2",
+                "source_port": "32768-65535",
+                "destination_ip": "8.8.8.8",
+                "destination_port": "80",
+                "comment": "default rule"
+            },
+            {
+                "description": "PERMT_host1_Cloudflare_tcp",
+                "action": "",
+                "protocol": "tcp",
+                "source_ip": "192.168.0.1",
+                "source_port": "32768-65535",
+                "destination_ip": "1.1.1.1",
+                "destination_port": "80",
+                "comment": "default rule"
+            }
+        ]
+    }
+]
