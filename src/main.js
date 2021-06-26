@@ -1,11 +1,12 @@
-
-import { createApp } from 'vue'
+import Vue from 'vue'
 import App from './App.vue'
-import axios from 'axios' //追記
-import VueAxios from 'vue-axios' //追記
-import Multiselect from '@vueform/multiselect'
+import router from './router'
+import vuetify from './plugins/vuetify'
 
-const app = createApp(App)
-app.use(VueAxios, axios)
-// app.use(Multiselect, axios)
-app.mount('#app')
+Vue.config.productionTip = false
+
+new Vue({
+  router,
+  vuetify,
+  render: h => h(App)
+}).$mount('#app')

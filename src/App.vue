@@ -1,88 +1,74 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <!-- <div v-for="(item, index) in data" :key="index">
-    {{index}}
-    <div v-for="(rule, index) in item.rules" :key="index">
-     {{index}}{{rule}}
-    </div>
-  </div> -->
-   <div>
-    <Multiselect
-      v-model="selected_srchosts"
-      mode="tags"
-      placeholder="Select your characters"
-      :options="srchosts()"
-      :searchable="true"
-    />
-    <Multiselect
-      v-model="selected_dsthosts"
-      mode="tags"
-      placeholder="Select your characters"
-      :options="dsthosts()"
-      :searchable="true"
-    />
-  </div>
+  <v-app>
+    <v-navigation-drawer v-model="drawer" app>
+      <v-list>
+        <v-list-item v-for="([icon, text, link], i) in items" :key="i" link>
+          <v-list-item-icon>
+            <v-icon>{{ icon }}</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title
+              ><router-link :to="link" tag="a">{{
+                text
+              }}</router-link></v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-app-bar app color="primary" dark>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <div class="d-flex align-center">
+        <v-img
+          alt="Vuetify Logo"
+          class="shrink mr-2"
+          contain
+          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          transition="scale-transition"
+          width="40"
+        />
+
+        <v-img
+          alt="Vuetify Name"
+          class="shrink mt-1 hidden-sm-and-down"
+          contain
+          min-width="100"
+          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
+          width="100"
+        />
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <v-btn
+        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        target="_blank"
+        text
+      >
+        <span class="mr-2">Latest Release</span>
+        <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-main>
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import Multiselect from '@vueform/multiselect'
 export default {
-  name: 'App',
-  components: {
-    Multiselect
-  },
-  data() {
-    return {
-      data: [],
-      selected_srchosts: null,
-      selected_dsthosts: null,
-    }
-  },
-  created() {
-    this.getData()
-  },
-  methods: {
-    srchosts() {
-      if(this.data.length == 0){
-        return []
-      } else {
-        return [...new Set(this.data[0].two_tuples.reduce((prev, cur) => {
-          return [...prev, cur[0]]
-        }, []))]
-      }
-    },
-    dsthosts() {
-      if(this.data.length == 0){
-        return []
-      } else {
-        return [...new Set(this.data[0].two_tuples.reduce((prev, cur) => {
-          return [...prev, cur[1]]
-        }, []))]
-      }
-    },
-      getData() {
-        this.axios.get('/acl1.json')
-          .then((response) => {
-            this.data = response.data
-          })
-          .catch((e) => {
-            alert(e);
-          });
-      }
-  }
-}
+  name: "App",
+
+  data: () => ({
+    drawer: null,
+    items: [
+      ["mdi-email", "Home", "/"],
+      ["mdi-account-supervisor-circle", "App", "Home"],
+      ["mdi-account-supervisor-circle", "Tool1", "Tool1"],
+      ["mdi-clock-start", "About", "About"],
+    ],
+  }),
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
-<style src="@vueform/multiselect/themes/default.css"></style>
-
