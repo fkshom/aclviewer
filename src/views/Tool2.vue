@@ -63,23 +63,27 @@
       <v-col cols="10">
         <v-card outlined>
           <v-card-text
-            ><RichText :text="template_text" :arguments="args" class=""
+            ><RichText
+              ref="richtext"
+              :text="template_text"
+              :arguments="args"
+              class=""
           /></v-card-text> </v-card
-        >{{ args }}</v-col
+        >{{ args }}
+        <button v-on:click="copyToClipboard">テキストをコピー</button></v-col
       >
     </v-row>
   </div>
 </template>
 
 <script>
-import Multiselect from "vue-multiselect";
 import RichText from "@juliushaertl/vue-richtext";
 
 import Data from "./data/tool2data";
 export default {
   name: "Tool2",
 
-  components: { Multiselect, RichText },
+  components: { RichText },
   data() {
     return {
       name: "",
@@ -100,6 +104,8 @@ export default {
         place: this.place,
         date: this.date,
         targets: this.selected_targets.map((t) => t.text).join(", "),
+        file: "thisfile",
+        username: "myname",
       };
     },
   },
@@ -115,6 +121,12 @@ export default {
       console.log(Data);
       this.$data.templates = Data.templates;
       this.$data.targets = Data.targets;
+    },
+    copyToClipboard(event) {
+      let text = this.$refs.richtext.$el.textContent;
+      navigator.clipboard.writeText(text).catch((e) => {
+        console.error(e);
+      });
     },
   },
   created() {
