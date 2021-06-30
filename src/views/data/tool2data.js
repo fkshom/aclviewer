@@ -7,12 +7,12 @@ const Data = {
   templates: [
     {
       title: "title1",
-      text: "The file {file} \nwas added by {username}",
+      text: "The file {{file}} \nwas added by {{username}}",
       targets: ["a", "b"],
     },
     {
       title: "title2",
-      text: ["The file2 {file} was2", "added2 by {username}"].join("\n"),
+      text: ["The file2 {{file}} was2", "added2 by {{username}}"].join("\n"),
       targets: ["a", "c"],
     },
   ],

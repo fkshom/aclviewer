@@ -64,27 +64,14 @@
           chips
           return-object
         ></v-select>
+        <button v-on:click="copyToClipboard">テキストをコピー</button>
       </v-col>
-    </v-row>
-    <v-row justify="center">
-      <v-col cols="10">
-        <v-card outlined>
-          <v-card-text
-            ><RichText
-              ref="richtext"
-              :text="template_text"
-              :arguments="args"
-              class=""
-          /></v-card-text> </v-card
-        >{{ args }}
-        <button v-on:click="copyToClipboard">テキストをコピー</button></v-col
-      >
     </v-row>
   </div>
 </template>
 
 <script>
-import Handlebars from "@/plugins/handlebars";
+import Handlebars from "handlebars";
 
 import Data from "./data/tool2data";
 export default {
@@ -147,8 +134,7 @@ export default {
       this.$data.targets = Data.targets;
     },
     copyToClipboard(event) {
-      let text = this.$refs.richtext.$el.textContent;
-      navigator.clipboard.writeText(text).catch((e) => {
+      navigator.clipboard.writeText(this.renderedstring).catch((e) => {
         console.error(e);
       });
     },
