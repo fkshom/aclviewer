@@ -2,17 +2,18 @@
   <v-app>
     <v-navigation-drawer v-model="drawer" app>
       <v-list>
-        <v-list-item v-for="([icon, text, link], i) in items" :key="i" link>
+        <v-list-item
+          v-for="([icon, text, link], i) in items"
+          :key="i"
+          link
+          :to="link"
+        >
           <v-list-item-icon>
             <v-icon>{{ icon }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title
-              ><router-link :to="link" tag="a">{{
-                text
-              }}</router-link></v-list-item-title
-            >
+            <v-list-item-title>{{ text }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
