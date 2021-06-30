@@ -45,7 +45,14 @@
           auto-grow
           v-model="template_text"
         ></v-textarea>
-        {{ selected }}
+
+        <v-textarea
+          name="rendered"
+          filled
+          label="rendered"
+          auto-grow
+          v-bind:value="renderedstring"
+        ></v-textarea>
 
         <v-select
           v-model="selected_targets"
@@ -77,13 +84,13 @@
 </template>
 
 <script>
-import RichText from "@juliushaertl/vue-richtext";
+import Handlebars from "@/plugins/handlebars";
 
 import Data from "./data/tool2data";
 export default {
   name: "Tool2",
 
-  components: { RichText },
+  components: {},
   data() {
     return {
       name: "",
@@ -103,13 +110,30 @@ export default {
         name: this.name,
         place: this.place,
         date: this.date,
+        machines: this.selected_targets.map((t) => t.text).join("\n"),
         targets: this.selected_targets.map((t) => t.text).join(", "),
         file: "thisfile",
         username: "myname",
       };
     },
+    renderedstring: function () {
+      var template = Handlebars.compile(this.template_text);
+      return template(this.args1());
+    },
   },
   methods: {
+    args1: function () {
+      return {
+        name: this.name,
+        place: this.place,
+        date: this.date,
+        machines: this.selected_targets.map((t) => t.text).join("\n"),
+        targets: this.selected_targets.map((t) => t.text).join(", "),
+        targetsa: this.selected_targets.map((t) => t.text),
+        file: "thisfile",
+        username: "myname",
+      };
+    },
     templateChanged(template) {
       var ts = this.targets.filter((t) => {
         return template.targets.includes(t.id);
