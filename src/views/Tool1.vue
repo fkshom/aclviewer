@@ -6,7 +6,8 @@
       </v-col>
     </v-row>
 
-    <v-row justify="center"
+    <v-row
+justify="center"
       ><v-col cols="5">
         <label class="typo__label">Src Hosts</label>
         <multiselect

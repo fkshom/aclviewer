@@ -9,14 +9,7 @@
 
       <v-row justify="center">
         <v-col cols="4">
-          <v-select
-v-model="selected"
-item-text="title"
-:items="templates"
-label="templates"
-single-line
-return-object
-v-on:change="templateChanged"></v-select>
+          <v-select v-model="selected" item-text="title" :items="templates" label="templates" single-line return-object v-on:change="templateChanged"></v-select>
           <v-radio-group v-model="impact" row mandatory>
             <template v-slot:label>
               <div>作業影響</div>
@@ -24,16 +17,7 @@ v-on:change="templateChanged"></v-select>
             <v-radio label="アリ" color="red" value="yes"></v-radio>
             <v-radio label="ナシ" color="green" value="no"> </v-radio>
           </v-radio-group>
-          <v-select
-v-model="selected_targets"
-item-text="text"
-:items="targets"
-label="targets"
-persistent-hint
-single-line
-multiple
-chips
-return-object></v-select>
+          <v-select v-model="selected_targets" item-text="text" :items="targets" label="targets" persistent-hint single-line multiple chips return-object></v-select>
           <v-text-field label="date" placeholder="Placeholder" v-model="date"></v-text-field>
           <v-date-picker v-model="date" year-icon="mdi-calendar-blank" prev-icon="mdi-skip-previous" next-icon="mdi-skip-next"></v-date-picker>
           <v-text-field label="作業者（name）" v-model="name" placeholder="Placeholder"></v-text-field>
@@ -42,22 +26,10 @@ return-object></v-select>
         <v-col cols="8">
           <v-row>
             <v-col cols="6">
-              <v-textarea
-name="template"
-rows="30"
-filled
-label="template"
-auto-grow
-v-model="template_text"></v-textarea>
+              <v-textarea name="template" rows="30" filled label="template" auto-grow v-model="template_text"></v-textarea>
             </v-col>
             <v-col cols="6">
-              <v-textarea
-name="rendered"
-rows="30"
-filled
-label="rendered"
-auto-grow
-v-bind:value="renderedstring"></v-textarea>
+              <v-textarea name="rendered" rows="30" filled label="rendered" auto-grow v-bind:value="renderedstring"></v-textarea>
               <button v-on:click="copyToClipboard">テキストをコピー</button>
             </v-col>
           </v-row>
