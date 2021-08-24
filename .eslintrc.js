@@ -5,15 +5,26 @@ module.exports = {
   },
   'extends': [
     'plugin:vue/essential',
-    'eslint:recommended'
+    'eslint:recommended',
   ],
   parserOptions: {
-    parser: 'babel-eslint'
+    // parser: 'babel-eslint',
+    ecmaVersion: 2020,
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     "vue/no-unused-components": "off",
-    "no-unused-vars": "off"
+    "no-unused-vars": "off",
+    "vue/max-attributes-per-line": [
+      "error",
+      {
+        "singleline": 5,
+        "multiline": {
+          "max": 1,
+          "allowFirstLine": false
+        }
+      }
+    ],
   },
 }
