@@ -9,19 +9,28 @@
 
       <v-row justify="center">
         <v-col cols="4">
-          <v-select v-model="selected" item-text="title" :items="templates" label="templates" single-line return-object v-on:change="templateChanged"></v-select>
-          <v-radio-group v-model="impact" row mandatory>
+          <v-select v-model="selected_template" item-text="title" :items="templates" label="templates" single-line return-object v-on:change="templateChanged"></v-select>
+          <v-select v-model="selected_content" item-text="title" :items="contents" label="contents" single-line return-object></v-select>
+          <v-radio-group v-model="impact" row mandatory v-on:change="impactChanged">
             <template v-slot:label>
               <div>作業影響</div>
             </template>
             <v-radio label="アリ" color="red" value="yes"></v-radio>
             <v-radio label="ナシ" color="green" value="no"> </v-radio>
           </v-radio-group>
-          <v-select v-model="selected_targets" item-text="text" :items="targets" label="targets" persistent-hint single-line multiple chips return-object></v-select>
-          <v-text-field label="date" placeholder="Placeholder" v-model="date"></v-text-field>
+          <v-select v-model="selected_targets" item-text="text" :items="targets" label="targets" :disabled="isTargetsDisabled" persistent-hint single-line multiple chips return-object></v-select>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field label="date" placeholder="Placeholder" v-model="date"></v-text-field>
+            </v-col>
+            <v-col col="6">
+              <v-text-field label="時刻（time）" v-model="time" placeholder="Placeholder"></v-text-field>
+            </v-col>
+          </v-row>
           <v-date-picker v-model="date" year-icon="mdi-calendar-blank" prev-icon="mdi-skip-previous" next-icon="mdi-skip-next"></v-date-picker>
+          <v-select v-model="selected_places" item-text="text" :items="places" label="作業場所（places）" persistent-hint single-line multiple chips return-object></v-select>
           <v-text-field label="作業者（name）" v-model="name" placeholder="Placeholder"></v-text-field>
-          <v-text-field label="作業場所（place）" v-model="place" placeholder="Placeholder"></v-text-field>
+          <v-text-field label="連絡先（tel）" v-model="tel" placeholder="Placeholder"></v-text-field>
         </v-col>
         <v-col cols="8">
           <v-row>
@@ -30,11 +39,30 @@
             </v-col>
             <v-col cols="6">
               <v-textarea name="rendered" rows="30" filled label="rendered" auto-grow v-bind:value="renderedstring"></v-textarea>
-              <button v-on:click="copyToClipboard">テキストをコピー</button>
+              <v-btn color="primary" block v-on:click="copyToClipboard">テキストをコピー</v-btn>
+              通知先は「作業通知」チャンネルとすること。
             </v-col>
           </v-row>
         </v-col>
       </v-row>
+
+    <v-snackbar
+      v-model="show_snacbakbar"
+      :timeout="2000"
+    >
+      テキストをクリップボードにコピーしました
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="blue"
+          text
+          v-bind="attrs"
+          @click="show_snacbakbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
     </v-container>
   </div>
 </template>
@@ -49,68 +77,80 @@
     components: {},
     data() {
       return {
-        name: '',
-        place: '',
         text: '',
         date: new Date().toISOString().substr(0, 10),
+        time: 'xx:xx',
         selected_targets: [],
         template_text: '',
         targets: [],
+        places: [],
         selected: null,
         templates: [],
+        name: '',
+        selected_places: [],
+        tel: '',
+        contents: null,
+        selected_content: null,
+        impact: 'yes',
+        isTargetsDisabled: false,
+        show_snacbakbar: false,
       };
     },
     computed: {
-      args: function() {
-        return {
-          name: this.name,
-          place: this.place,
-          date: this.date,
-          machines: this.selected_targets.map(t => t.text).join('\n'),
-          targets: this.selected_targets.map(t => t.text).join(', '),
-          file: 'thisfile',
-          username: 'myname',
-        };
-      },
-      renderedstring: function() {
+      renderedstring: function () {
         var template = Handlebars.compile(this.template_text);
-        return template(this.args1());
+        return template(this.args());
       },
     },
     methods: {
-      args1: function() {
+      args: function () {
         return {
           name: this.name,
-          place: this.place,
+          places_str: this.selected_places.map((t) => t.text).join(', '),
+          places_arr: this.selected_places.map((t) => t.text),
+          tel: this.tel,
           date: this.date,
-          machines: this.selected_targets.map(t => t.text).join('\n'),
-          targets: this.selected_targets.map(t => t.text).join(', '),
-          targetsa: this.selected_targets.map(t => t.text),
-          file: 'thisfile',
-          username: 'myname',
+          time: this.time,
+          machines: this.selected_targets.map((t) => t.text).join('\n'),
+          targets_str: this.impact === 'yes' ? this.selected_targets.map((t) => t.value).join(' ') : "",
+          targets_arr: this.impact === 'yes' ? this.selected_targets.map((t) => t.value) : [],
+          username: this.name,
+          content: this.selected_content !== null && this.selected_content.text || "",
         };
       },
       templateChanged(template) {
-        var ts = this.targets.filter(t => {
+        var ts = this.targets.filter((t) => {
           return template.targets.includes(t.id);
         });
         this.selected_targets = ts;
         this.template_text = template.text;
       },
+      impactChanged(value){
+        if(value === 'yes'){
+          this.isTargetsDisabled = false
+        } else {
+          this.isTargetsDisabled = true
+        }
+      },
       set_template() {
         console.log(Data);
-        this.$data.templates = Data.templates;
-        this.$data.targets = Data.targets;
+        this.$data.templates = Data.templates
+        this.$data.targets = Data.targets
+        this.$data.places = Data.places
+        this.$data.contents = Data.contents
       },
       copyToClipboard(event) {
-        navigator.clipboard.writeText(this.renderedstring).catch(e => {
+        navigator.clipboard.writeText(this.renderedstring).catch((e) => {
           console.error(e);
         });
+        this.$data.show_snacbakbar = true
       },
     },
     created() {
       this.set_template();
+      this.selected_template = this.templates[0]
+      this.templateChanged(this.selected_template)
+      this.selected_content = this.contents[0]
     },
   };
 </script>
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
