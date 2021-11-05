@@ -4,13 +4,14 @@
       <v-row class="mt-5">
         <v-col cols="12">
           <h1 class="display-2 font-weight-bold mb-3">作業通知ジェネレータ</h1>
+          <Component1></Component1>
         </v-col>
       </v-row>
 
       <v-row justify="center">
         <v-col cols="4">
-          <v-select v-model="selected_template" item-text="title" :items="templates" label="templates" single-line return-object v-on:change="templateChanged"></v-select>
-          <v-select v-model="selected_content" item-text="title" :items="contents" label="contents" single-line return-object></v-select>
+          <v-select v-model="selected_template" item-text="title" :items="templates" label="templates" return-object v-on:change="templateChanged"></v-select>
+          <v-select v-model="selected_content" item-text="title" :items="contents" label="contents" return-object></v-select>
           <v-radio-group v-model="impact" row mandatory v-on:change="impactChanged">
             <template v-slot:label>
               <div>作業影響</div>
@@ -18,17 +19,17 @@
             <v-radio label="アリ" color="red" value="yes"></v-radio>
             <v-radio label="ナシ" color="green" value="no"> </v-radio>
           </v-radio-group>
-          <v-select v-model="selected_targets" item-text="text" :items="targets" label="targets" :disabled="isTargetsDisabled" persistent-hint single-line multiple chips return-object></v-select>
+          <v-select v-model="selected_targets" item-text="text" :items="targets" label="targets" :disabled="isTargetsDisabled" persistent-hint multiple chips return-object></v-select>
           <v-row>
             <v-col cols="6">
               <v-text-field label="date" placeholder="Placeholder" v-model="date"></v-text-field>
             </v-col>
             <v-col col="6">
-              <v-text-field label="時刻（time）" v-model="time" placeholder="Placeholder"></v-text-field>
+              <v-text-field label="time" v-model="time" placeholder="Placeholder"></v-text-field>
             </v-col>
           </v-row>
           <v-date-picker v-model="date" year-icon="mdi-calendar-blank" prev-icon="mdi-skip-previous" next-icon="mdi-skip-next"></v-date-picker>
-          <v-select v-model="selected_places" item-text="text" :items="places" label="作業場所（places）" persistent-hint single-line multiple chips return-object></v-select>
+          <v-select v-model="selected_places" item-text="text" :items="places" label="作業場所（places）" persistent-hint multiple chips return-object></v-select>
           <v-text-field label="作業者（name）" v-model="name" placeholder="Placeholder"></v-text-field>
           <v-text-field label="連絡先（tel）" v-model="tel" placeholder="Placeholder"></v-text-field>
         </v-col>
@@ -70,11 +71,14 @@
 <script>
   import Handlebars from 'handlebars';
 
+  import Component1 from './components/component1'
   import Data from './data/tool2data';
   export default {
     name: 'Tool2',
 
-    components: {},
+    components: {
+      Component1: Component1
+    },
     data() {
       return {
         text: '',
